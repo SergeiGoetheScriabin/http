@@ -1,3 +1,0 @@
-/home/frank/http/build/CMakeFiles/server.dir
-/home/frank/http/build/CMakeFiles/edit_cache.dir
-/home/frank/http/build/CMakeFiles/rebuild_cache.dir

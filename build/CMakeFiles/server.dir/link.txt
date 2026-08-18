@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/server.dir/link.d CMakeFiles/server.dir/src/main.cpp.o CMakeFiles/server.dir/src/tcp_server.cpp.o CMakeFiles/server.dir/src/http_request.cpp.o CMakeFiles/server.dir/src/http_response.cpp.o CMakeFiles/server.dir/src/mime_types.cpp.o -o server
