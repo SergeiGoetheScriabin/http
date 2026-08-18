@@ -4,7 +4,6 @@ A lightweight HTTP/1.1 server built from scratch using only POSIX sockets and C+
 
 ##  Project Overview
 
-This server demonstrates deep understanding of:
 - TCP/IP networking (socket programming)
 - HTTP/1.1 protocol semantics
 - RFC 9110 compliance
