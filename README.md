@@ -1,63 +1,119 @@
-# HTTP/1.1 Server from Scratch
+HTTP/1.1 Server
 
-A lightweight HTTP/1.1 server built from scratch using only POSIX sockets and C++20, following **RFC 9110** (HTTP Semantics). No third-party libraries - just the C++ standard library and system calls.
+A lightweight HTTP/1.1 server written in C++20 using POSIX sockets. The server handles TCP connections, parses HTTP requests, builds responses, and serves static files from a local web root.
+Features
 
-## 📋 Project Overview
+    HTTP/1.1 request parsing
+    GET and HEAD methods
+    Static file serving
+    Content-Type detection
+    Content-Length handling
+    404 Not Found and 403 Forbidden responses
+    Path traversal protection
+    Clean socket management using RAII
+    No third-party networking libraries
 
-This server demonstrates deep understanding of:
-- TCP/IP networking (socket programming)
-- HTTP/1.1 protocol semantics
-- RFC 9110 compliance
-- Modern C++ (RAII, OOP, std::filesystem)
-- System programming
+Build
 
-## 🚀 Features Implemented
+git clone <repository-url>
+cd http
 
-### Phase 1: TCP Server (RFC 9110 Section 3.3)
-- Socket creation, binding, listening, and accepting
-- RAII for automatic socket cleanup
-- Non-copyable server design
-
-### Phase 2: HTTP Request Parser (RFC 9110 Sections 3.4, 5, 7.1)
-- Request-Line parsing (Method, URI, HTTP-Version)
-- Header field parsing (case-insensitive)
-- Content-Length handling for request body
-- Whitespace trimming (RFC 9110 Section 5.5)
-
-### Phase 3: HTTP Response Builder (RFC 9110 Sections 15, 6.6.1)
-- Status codes: 200 OK, 404 Not Found, 405 Method Not Allowed, 403 Forbidden
-- Date header (RFC 9110 Section 5.6.7 - IMF-fixdate format)
-- Content-Type based on file extension
-- Content-Length for proper message framing
-- Connection: close header
-
-### Phase 4: Static File Serving (RFC 9110 Sections 6.4, 7.1)
-- File path resolution from URI
-- Default index.html handling
-- Binary file support (images, PDFs, etc.)
-
-### Phase 5: Security (RFC 9110 Section 17.3)
-- Path traversal prevention (`..` filtering)
-- 403 Forbidden for unsafe paths
-
-### Phase 6: HTTP Methods (RFC 9110 Section 9)
-- GET method (Section 9.3.1) - retrieve resources
-- HEAD method (Section 9.3.2) - retrieve headers only
-
-## 🛠️ Building
-
-```bash
-# Clone or navigate to project
-cd ~/http
-
-# Create build directory
-mkdir -p build && cd build
-
-# Configure with CMake
+mkdir -p build
+cd build
 cmake ..
-
-# Build
 make
 
-# Run server
+Run
+
+Start the server from the build directory:
+
 ./server
+
+The server listens on:
+
+http://localhost:8080
+
+The default web root is:
+
+www/
+
+Usage
+GET
+
+Request the default page:
+
+curl http://localhost:8080/
+
+Request a specific file:
+
+curl http://localhost:8080/test.txt
+
+HEAD
+
+Request headers without the response body:
+
+curl -I http://localhost:8080/
+
+404 Response
+
+Request a file that does not exist:
+
+curl -v http://localhost:8080/not-found
+
+Static Files
+
+Create a file in the web root:
+
+echo "Hello, world." > ../www/test.txt
+
+Then request it:
+
+curl http://localhost:8080/test.txt
+
+Browser
+
+With the server running, open:
+
+http://localhost:8080
+
+Benchmarks
+
+Benchmarks are run locally with ApacheBench.
+
+Run:
+
+ab -n 1000 -c 10 http://localhost:8080/
+
+Example output:
+
+Concurrency Level:      10
+Complete requests:      1000
+Failed requests:        0
+Requests per second:    <RPS> [#/sec]
+Time per request:       <TIME> [ms]
+Transfer rate:          <RATE> [Kbytes/sec]
+
+Results will vary depending on the machine and environment.
+Project Structure
+
+http/
+├── include/
+│   ├── tcp_server.hpp
+│   ├── http_request.hpp
+│   ├── http_response.hpp
+│   └── mime_types.hpp
+├── src/
+│   ├── main.cpp
+│   ├── tcp_server.cpp
+│   ├── http_request.cpp
+│   ├── http_response.cpp
+│   └── mime_types.cpp
+├── www/
+│   └── index.html
+├── CMakeLists.txt
+└── README.md
+
+Implementation
+
+The server is intentionally small and uses POSIX sockets directly rather than a networking framework. The code is organized around TCP connection handling, HTTP request parsing, response construction, and static file serving.
+
