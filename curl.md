@@ -1,15 +1,15 @@
-# Test basic GET
+# Test GET request
 curl -v http://localhost:8080/
-# Expected: 200 OK, HTML response
 
-# Test POST
-curl -X POST -d '{"name":"test"}' http://localhost:8080/api/data
-# Expected: 201 Created, JSON response
+# Test HEAD request (headers only)
+curl -I http://localhost:8080/
 
-# Test not found
-curl -v http://localhost:8080/does_not_exist
-# Expected: 404 Not Found
+# Test 404 Not Found
+curl -v http://localhost:8080/doesntexist
 
-# Test malformed request
-echo -e "GET / HTTP/1.0\r\nHost: localhost\r\n\r\n" | nc localhost 8080
-# Expected: 200 OK
+# Test static file
+echo "Hello World" > ../www/test.txt
+curl -v http://localhost:8080/test.txt
+
+# Test image (create or download one)
+curl -v http://localhost:8080/image.png
